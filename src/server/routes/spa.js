@@ -16,6 +16,6 @@ export const spaRoute = async (fastify) => {
   });
 
   fastify.get("*", (_req, reply) => {
-    return reply.sendFile("index.html", join(__dirname, "dist"));
+    return reply.sendFile("index.html", join(__dirname, "public"));
   });
 };

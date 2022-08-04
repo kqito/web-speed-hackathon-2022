@@ -146,6 +146,7 @@ module.exports = [
     name: "client",
     output: {
       path: DIST_PUBLIC,
+      publicPath: "/",
     },
     // output: {
     //   filename: "[name].js",
@@ -197,6 +198,7 @@ module.exports = [
     output: {
       filename: "[name].js",
       path: DIST_ROOT,
+      publicPath: "/",
     },
     resolve: {
       extensions: [".mjs", ".js", ".jsx"],
