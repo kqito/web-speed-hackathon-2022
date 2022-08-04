@@ -55,7 +55,6 @@ const createBase = ({ isClient }) => ({
     new CopyPlugin({
       patterns: [{ from: PUBLIC_ROOT, to: DIST_PUBLIC }],
     }),
-    new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(ja)$/),
     process.env.ANALYZER === "true" &&
       new BundleAnalyzerPlugin({
         analyzerPort: isClient ? 8887 : 8889,
