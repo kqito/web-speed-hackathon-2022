@@ -1,5 +1,10 @@
-import { motion } from "framer-motion";
-import React, { forwardRef, useCallback, useState, useMemo } from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useState,
+  useMemo,
+  Suspense,
+} from "react";
 
 import { Dialog } from "../../../../components/layouts/Dialog";
 import { Spacer } from "../../../../components/layouts/Spacer";
@@ -14,6 +19,8 @@ const CHARGE = "charge";
 const dummy = {
   0: { name: "" },
 };
+
+const Motion = React.lazy(() => import("./Motion"));
 
 /**
  * @typedef Props
@@ -106,9 +113,9 @@ export const ChargeDialog = forwardRef(
               </datalist>
 
               {bank != null && (
-                <motion.div animate={{ opacity: 1 }} initial={{ opacity: 0 }}>
-                  銀行名: {bank.name}銀行
-                </motion.div>
+                <Suspense fallback={null}>
+                  <Motion>銀行名: {bank.name}銀行</Motion>
+                </Suspense>
               )}
 
               <label>
@@ -130,9 +137,9 @@ export const ChargeDialog = forwardRef(
               </datalist>
 
               {branch && (
-                <motion.div animate={{ opacity: 1 }} initial={{ opacity: 0 }}>
-                  支店名: {branch.name}
-                </motion.div>
+                <Suspense fallback={null}>
+                  <Motion>支店名: {branch.name}</Motion>
+                </Suspense>
               )}
 
               <label>
