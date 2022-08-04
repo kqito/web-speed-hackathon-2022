@@ -1,1 +1,2 @@
-export * from "./Odds";
+import { Odds } from "./Odds";
+export default Odds;

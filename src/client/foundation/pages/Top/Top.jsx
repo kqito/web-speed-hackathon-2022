@@ -121,13 +121,20 @@ export const Top = () => {
 
   const { data: raceData } = useFetch("/api/races", jsonFetcher);
 
-  const handleClickChargeButton = useCallback(() => {
+  const [zengin, setZengin] = useState(undefined);
+  const handleClickChargeButton = useCallback(async () => {
     if (chargeDialogRef.current === null) {
       return;
     }
 
+    if (zengin === undefined) {
+      import("zengin-code").then(({ default: codes }) => {
+        setZengin(codes);
+      });
+    }
+
     chargeDialogRef.current.showModal();
-  }, []);
+  }, [zengin]);
 
   const handleCompleteCharge = useCallback(() => {
     revalidate();
@@ -177,7 +184,11 @@ export const Top = () => {
         )}
       </section>
 
-      <ChargeDialog ref={chargeDialogRef} onComplete={handleCompleteCharge} />
+      <ChargeDialog
+        ref={chargeDialogRef}
+        onComplete={handleCompleteCharge}
+        zenginCode={zengin}
+      />
     </Container>
   );
 };

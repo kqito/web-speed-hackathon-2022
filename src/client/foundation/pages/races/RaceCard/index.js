@@ -1,1 +1,2 @@
-export * from "./RaceCard";
+import { RaceCard } from "./RaceCard";
+export default RaceCard;

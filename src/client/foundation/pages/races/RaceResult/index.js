@@ -1,1 +1,2 @@
-export * from "./RaceResult";
+import { RaceResult } from "./RaceResult";
+export default RaceResult;
