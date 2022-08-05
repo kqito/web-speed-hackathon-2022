@@ -107,9 +107,14 @@ export const ChargeDialog = forwardRef(
               </label>
 
               <datalist id="ChargeDialog-bank-list">
-                {bankList.map(({ code, name }) => (
-                  <option key={code} value={code}>{`${name} (${code})`}</option>
-                ))}
+                {zenginCode !== dummy
+                  ? bankList.map(({ code, name }) => (
+                      <option
+                        key={code}
+                        value={code}
+                      >{`${name} (${code})`}</option>
+                    ))
+                  : []}
               </datalist>
 
               {bank != null && (

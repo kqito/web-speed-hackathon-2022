@@ -122,14 +122,18 @@ export const Top = () => {
       return;
     }
 
-    if (zengin === undefined) {
-      import("zengin-code").then(({ default: codes }) => {
-        setZengin(codes);
-      });
+    chargeDialogRef.current.showModal();
+  }, []);
+
+  useEffect(() => {
+    if (!userData || zengin !== undefined) {
+      return;
     }
 
-    chargeDialogRef.current.showModal();
-  }, [zengin]);
+    import("zengin-code").then(({ default: codes }) => {
+      setZengin(codes);
+    });
+  }, [userData, zengin]);
 
   const handleCompleteCharge = useCallback(() => {
     revalidate();
