@@ -35,24 +35,35 @@ export const RaceResult = () => {
     authorizedJsonFetcher,
   );
 
-  if (data == null) {
-    return <Container>Loading...</Container>;
-  }
-
   return (
     <Container>
       <Spacer mt={Space * 2} />
-      <Heading as="h1">{data.name}</Heading>
-      <p>
-        開始 {formatTime(data.startAt)} 締切 {formatTime(data.closeAt)}
-      </p>
+      {data ? (
+        <>
+          <Heading as="h1">{data.name}</Heading>
+          <p>
+            開始 {formatTime(data.startAt)} 締切 {formatTime(data.closeAt)}
+          </p>
+        </>
+      ) : (
+        <div style={{ height: "80px" }} />
+      )}
 
       <Spacer mt={Space * 2} />
 
-      <Section dark shrink>
+      <Section dark pic shrink>
         <LiveBadge>Live</LiveBadge>
         <Spacer mt={Space * 2} />
-        <TrimmedImage height={225} src={data.image} width={400} />
+        {data ? (
+          <TrimmedImage
+            height={225}
+            loading="eager"
+            src={data.image}
+            width={400}
+          />
+        ) : (
+          <div style={{ height: 225, width: 400 }} />
+        )}
       </Section>
 
       <Spacer mt={Space * 2} />
@@ -70,11 +81,16 @@ export const RaceResult = () => {
         <Heading as="h2">購入した買い目</Heading>
 
         <Spacer mt={Space * 2} />
-        <BettingTicketList>
-          {(ticketData?.bettingTickets ?? []).map((ticket) => (
-            <BettingTicketList.Item key={ticket.id} ticket={ticket} />
-          ))}
-        </BettingTicketList>
+
+        {data ? (
+          <BettingTicketList>
+            {(ticketData?.bettingTickets ?? []).map((ticket) => (
+              <BettingTicketList.Item key={ticket.id} ticket={ticket} />
+            ))}
+          </BettingTicketList>
+        ) : (
+          <div style={{ height: "62px" }} />
+        )}
 
         <Spacer mt={Space * 4} />
         <Heading as="h2">勝負結果</Heading>

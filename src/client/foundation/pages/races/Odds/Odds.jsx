@@ -57,26 +57,39 @@ export const Odds = () => {
     [],
   );
 
-  if (data == null) {
-    return <Container>Loading...</Container>;
-  }
-
-  const isRaceClosed = dayjs(data.closeAt).isBefore(new Date());
+  const isRaceClosed = data
+    ? dayjs(data.closeAt).isBefore(new Date())
+    : undefined;
 
   return (
     <Container>
       <Spacer mt={Space * 2} />
-      <Heading as="h1">{data.name}</Heading>
-      <p>
-        開始 {formatTime(data.startAt)} 締切 {formatTime(data.closeAt)}
-      </p>
+      {data ? (
+        <>
+          <Heading as="h1">{data.name}</Heading>
+          <p>
+            開始 {formatTime(data.startAt)} 締切 {formatTime(data.closeAt)}
+          </p>
+        </>
+      ) : (
+        <div style={{ height: "80px" }} />
+      )}
 
       <Spacer mt={Space * 2} />
 
-      <Section dark shrink>
+      <Section dark pic shrink>
         <LiveBadge>Live</LiveBadge>
         <Spacer mt={Space * 2} />
-        <TrimmedImage height={225} src={data.image} width={400} />
+        {data ? (
+          <TrimmedImage
+            height={225}
+            loading="eager"
+            src={data.image}
+            width={400}
+          />
+        ) : (
+          <div style={{ height: 225, width: 400 }} />
+        )}
       </Section>
 
       <Spacer mt={Space * 2} />
@@ -92,33 +105,58 @@ export const Odds = () => {
 
         <Spacer mt={Space * 4} />
 
-        <Callout $closed={isRaceClosed}>
-          <i className="fas fa-info-circle" />
-          {isRaceClosed
-            ? "このレースの投票は締め切られています"
-            : "オッズをクリックすると拳券が購入できます"}
-        </Callout>
+        {data ? (
+          <Callout $closed={isRaceClosed}>
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-info-circle fa-w-16"
+              data-fa-i2svg=""
+              data-icon="info-circle"
+              data-prefix="fas"
+              focusable="false"
+              height="16"
+              role="img"
+              viewBox="0 0 512 512"
+              width="16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z"
+                fill="currentColor"
+              ></path>
+            </svg>
+            {isRaceClosed
+              ? "このレースの投票は締め切られています"
+              : "オッズをクリックすると拳券が購入できます"}
+          </Callout>
+        ) : (
+          <div style={{ height: "40px" }} />
+        )}
 
         <Spacer mt={Space * 4} />
         <Heading as="h2">オッズ表</Heading>
 
         <Spacer mt={Space * 2} />
-        <OddsTable
-          entries={data.entries}
-          isRaceClosed={isRaceClosed}
-          odds={data.trifectaOdds}
-          onClickOdds={handleClickOdds}
-        />
+        {data && (
+          <>
+            <OddsTable
+              entries={data.entries}
+              isRaceClosed={isRaceClosed}
+              odds={data.trifectaOdds}
+              onClickOdds={handleClickOdds}
+            />
 
-        <Spacer mt={Space * 4} />
-        <Heading as="h2">人気順</Heading>
+            <Spacer mt={Space * 4} />
+            <Heading as="h2">人気順</Heading>
 
-        <Spacer mt={Space * 2} />
-        <OddsRankingList
-          isRaceClosed={isRaceClosed}
-          odds={data.trifectaOdds}
-          onClickOdds={handleClickOdds}
-        />
+            <Spacer mt={Space * 2} />
+            <OddsRankingList
+              isRaceClosed={isRaceClosed}
+              odds={data.trifectaOdds}
+              onClickOdds={handleClickOdds}
+            />
+          </>
+        )}
       </Section>
 
       <TicketVendingModal ref={modalRef} odds={oddsKeyToBuy} raceId={raceId} />

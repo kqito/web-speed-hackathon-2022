@@ -30,24 +30,35 @@ export const RaceCard = () => {
   const { raceId } = useParams();
   const { data } = useFetch(`/api/races/${raceId}`, jsonFetcher);
 
-  if (data == null) {
-    return <Container>Loading...</Container>;
-  }
-
   return (
     <Container>
       <Spacer mt={Space * 2} />
-      <Heading as="h1">{data.name}</Heading>
-      <p>
-        開始 {formatTime(data.startAt)} 締切 {formatTime(data.closeAt)}
-      </p>
+      {data ? (
+        <>
+          <Heading as="h1">{data.name}</Heading>
+          <p>
+            開始 {formatTime(data.startAt)} 締切 {formatTime(data.closeAt)}
+          </p>
+        </>
+      ) : (
+        <div style={{ height: "80px" }} />
+      )}
 
       <Spacer mt={Space * 2} />
 
-      <Section dark shrink>
+      <Section dark pic shrink>
         <LiveBadge>Live</LiveBadge>
         <Spacer mt={Space * 2} />
-        <TrimmedImage height={225} src={data.image} width={400} />
+        {data ? (
+          <TrimmedImage
+            height={225}
+            loading="eager"
+            src={data.image}
+            width={400}
+          />
+        ) : (
+          <div style={{ height: 225, width: 400 }} />
+        )}
       </Section>
 
       <Spacer mt={Space * 2} />
@@ -61,20 +72,24 @@ export const RaceCard = () => {
           <TabNav.Item to={`/races/${raceId}/result`}>結果</TabNav.Item>
         </TabNav>
 
-        <Spacer mt={Space * 2} />
-        <PlayerPictureList>
-          {data.entries.map((entry) => (
-            <PlayerPictureList.Item
-              key={entry.id}
-              image={entry.player.image}
-              name={entry.player.name}
-              number={entry.number}
-            />
-          ))}
-        </PlayerPictureList>
+        {data && (
+          <>
+            <Spacer mt={Space * 2} />
+            <PlayerPictureList>
+              {data.entries.map((entry) => (
+                <PlayerPictureList.Item
+                  key={entry.id}
+                  image={entry.player.image}
+                  name={entry.player.name}
+                  number={entry.number}
+                />
+              ))}
+            </PlayerPictureList>
 
-        <Spacer mt={Space * 4} />
-        <EntryTable entries={data.entries} />
+            <Spacer mt={Space * 4} />
+            <EntryTable entries={data.entries} />
+          </>
+        )}
       </Section>
     </Container>
   );

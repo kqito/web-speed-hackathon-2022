@@ -26,9 +26,9 @@ const Wrapper = styled.section`
  */
 
 /** @type {React.FC<Props>} */
-export const Section = ({ children, dark, shrink }) => {
+export const Section = ({ children, dark, pic, shrink }) => {
   return (
-    <Wrapper $dark={dark} $shrink={shrink}>
+    <Wrapper $dark={dark} $pic={pic} $shrink={shrink}>
       {children}
     </Wrapper>
   );
