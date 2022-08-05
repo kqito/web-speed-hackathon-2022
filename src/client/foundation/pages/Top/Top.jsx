@@ -19,7 +19,7 @@ import { HeroImage } from "./internal/HeroImage";
 import { RecentRaceList } from "./internal/RecentRaceList";
 
 const MinHeight = styled.div`
-  min-height: 4460px;
+  min-height: 4000px;
 `;
 
 /**
