@@ -14,7 +14,7 @@ const Image = styled.img`
  * @property {string} url
  */
 
-const Spacer = () => (
+const Spacer = ({ children }) => (
   <div
     style={{
       aspectRatio: "347 / 249",
@@ -23,11 +23,12 @@ const Spacer = () => (
   >
     <div
       style={{
-        height: 3099,
         maxWidth: 1024,
-        width: 4320,
+        width: "auto",
       }}
-    ></div>
+    >
+      {children}
+    </div>
   </div>
 );
 
@@ -37,5 +38,9 @@ export const HeroImage = ({ url }) => {
     return <Spacer />;
   }
 
-  return <Image alt="" src={createCdnSrc(url)} />;
+  return (
+    <Spacer>
+      <Image alt="" src={createCdnSrc(url)} />
+    </Spacer>
+  );
 };

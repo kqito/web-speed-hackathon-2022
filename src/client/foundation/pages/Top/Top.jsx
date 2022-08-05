@@ -18,6 +18,10 @@ import { ChargeDialog } from "./internal/ChargeDialog";
 import { HeroImage } from "./internal/HeroImage";
 import { RecentRaceList } from "./internal/RecentRaceList";
 
+const MinHeight = styled.div`
+  min-height: 4460px;
+`;
+
 /**
  * @param {Model.Race[]} races
  * @returns {Model.Race[]}
@@ -63,7 +67,7 @@ function useTodayRacesWithAnimation(races) {
 
       numberOfRacesToShow.current++;
       setRacesToShow(slice(races, 0, numberOfRacesToShow.current));
-    }, 100);
+    }, 80);
   }, [isRacesUpdate, races]);
 
   useEffect(() => {
@@ -143,43 +147,44 @@ export const Top = () => {
           )
       : [];
   const todayRacesToShow = useTodayRacesWithAnimation(todayRaces);
-  const heroImageUrl = useHeroImage();
 
   return (
     <Container>
-      <HeroImage url={heroImageUrl} />
+      <MinHeight>
+        <HeroImage url="/assets/images/hero.jpg" />
 
-      <Spacer mt={Space * 2} />
-      {userData && (
-        <Stack horizontal alignItems="center" justifyContent="space-between">
-          <div>
-            <p>ポイント残高: {userData.balance}pt</p>
-            <p>払戻金: {userData.payoff}Yeen</p>
-          </div>
+        <Spacer mt={Space * 2} />
+        {userData && (
+          <Stack horizontal alignItems="center" justifyContent="space-between">
+            <div>
+              <p>ポイント残高: {userData.balance}pt</p>
+              <p>払戻金: {userData.payoff}Yeen</p>
+            </div>
 
-          <ChargeButton onClick={handleClickChargeButton}>
-            チャージ
-          </ChargeButton>
-        </Stack>
-      )}
-
-      <Spacer mt={Space * 2} />
-      <section>
-        <Heading as="h1">本日のレース</Heading>
-        {todayRacesToShow.length > 0 && (
-          <RecentRaceList>
-            {todayRacesToShow.map((race) => (
-              <RecentRaceList.Item key={race.id} race={race} />
-            ))}
-          </RecentRaceList>
+            <ChargeButton onClick={handleClickChargeButton}>
+              チャージ
+            </ChargeButton>
+          </Stack>
         )}
-      </section>
 
-      <ChargeDialog
-        ref={chargeDialogRef}
-        onComplete={handleCompleteCharge}
-        zenginCode={zengin}
-      />
+        <Spacer mt={Space * 2} />
+        <section>
+          <Heading as="h1">本日のレース</Heading>
+          {todayRacesToShow.length > 0 && (
+            <RecentRaceList>
+              {todayRacesToShow.map((race) => (
+                <RecentRaceList.Item key={race.id} race={race} />
+              ))}
+            </RecentRaceList>
+          )}
+        </section>
+
+        <ChargeDialog
+          ref={chargeDialogRef}
+          onComplete={handleCompleteCharge}
+          zenginCode={zengin}
+        />
+      </MinHeight>
     </Container>
   );
 };
